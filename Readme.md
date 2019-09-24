@@ -6,6 +6,12 @@
 - json
 - html
 
+# 源码分析
+
+利用try-catch，配合koa的洋葱模型，在最外层使用该中间件，即可达到异常捕获效果。
+
+通过ctx.accepts类型的不同，采用不同的处理方法。
+
 ## Installation
 
 ```js

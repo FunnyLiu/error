@@ -4,8 +4,7 @@
 /**
  * Module dependencies.
  */
-
-const consolidate = require('consolidate')
+const consolidate = require('consolidate')// 模板引擎综合体
 const { join } = require('path')
 const http = require('http')
 
@@ -41,8 +40,10 @@ function error (opts) {
   if (cache == null) cache = env !== 'development'
 
   return async function error (ctx, next) {
+    // 在中间件外套一个try，catch。所以使用的时候需要将该中间件放置最外层。
     try {
       await next()
+      // ctx.throw是koa本身基于http-errors模块提供的异常
       if (ctx.response.status === 404 && !ctx.response.body) ctx.throw(404)
     } catch (err) {
       ctx.status = typeof err.status === 'number' ? err.status : 500
@@ -51,6 +52,7 @@ function error (opts) {
       ctx.app.emit('error', err, ctx)
 
       // accepted types
+      // 针对不同accepte类型，使用不同的异常方案
       switch (ctx.accepts.apply(ctx, accepts)) {
         case 'text':
           ctx.type = 'text/plain'
